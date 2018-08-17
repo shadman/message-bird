@@ -1,0 +1,76 @@
+
+body, html, textarea, input, select {
+	font-style: Arial;
+	color: #000000;
+	margin:0 auto;
+}
+
+::placeholder {
+	color: #CFCFCF;
+}
+
+
+.message-box-area {
+	background-color: #2481d7;
+	width: 480px;
+	padding: 10px;
+	margin: 0 auto;
+	margin-top: 20px;
+}
+
+.row{
+	padding: 10px;
+	font-size: 25px;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+img {
+	padding: 10px;
+	width: 250px;
+}
+
+.logo {
+	width: 500px;
+	margin: 0 auto; 
+
+}
+
+form input, textarea, select {
+	color: black;
+	font-size: 30px;
+	border: 1px solid black;
+	padding: 5px;
+	font-style: Arial;
+}
+
+form textarea {
+	width:450px;
+	height:250px;
+	font-size: 25px;
+}
+
+form input[type=text]{
+	width:205px;
+	height:39px;
+}
+
+form select {
+	height:50px;
+}
+
+form input[type=submit] {
+	width: 100%;
+	padding: 10px;
+	background-color: green;
+	color: #FFFFFF;
+}
+
+.request-message {
+	font-size: 25px;
+	text-align: center;
+	color: green;	
+	background-color: white;
+	padding: 0px;
+	margin-bottom: 20px;
+}
