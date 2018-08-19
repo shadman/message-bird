@@ -1,16 +1,29 @@
 <?php
-$config = array(
 
-	// Database
-	'db_host' => 'localhost',
-	'db_name' => 'messagebird',
-	'db_username' => 'root',
-	'db_password' => '10pearls',
+class Config {
 
-	// Application
-	'max_size' => 150,
-	'status' => array(
-			'sent' => 'sent',
-			'failed' => 'failed',
-		   ),
-);
+	function params($param=''){
+
+		$config = array(
+
+			// Database
+			'db_host' => 'localhost',
+			'db_name' => 'messagebird',
+			'db_username' => 'root',
+			'db_password' => '10pearls',
+
+			// Application
+			'max_size' => 150,
+			'status' => (object) array(
+					'sent' => 'sent',
+					'failed' => 'failed',
+				   ),
+
+
+
+		);
+
+		return $config[$param];
+	}
+
+}
