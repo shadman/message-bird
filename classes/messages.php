@@ -1,31 +1,38 @@
 <?php
 require_once('config/config.php');
-
-print_r($config);
+require_once('classes/queue.php');
 
 class Message {
 
 	public function __construct(){
-		$this->maxMassageSize = 150;
+
+		$this->maxMassageSize = Config::params('max_size');
+
 	}
 
+	/*
+	* Sending message
+	*/
 	public function send($request){
-		print_r($request);
-
 		$messages = $this->filterMessage($request['message']);
 		$response = $this->sendMessage($messages);
-		if ($response=='sent') {
-			header('Location: index.php?status=sent');
+		if ($response==Config::params('status')->sent) {
+			//header('Location: index.php?status='.Config::params('status')->sent);
 		}
 	}
 
+	/*
+	* Get either message successed of failed per provided status
+	*/
 	public function getMessage($status='') {
 		$message = '';
 
-		if ($status=='sent') $message = "Message has been sent successfully";
+		if ($status==Config::params('status')->sent) $message = "Message has been sent successfully";
 		
 		return $message;
 	}
+
+
 
 
 	private function filterMessage($message=''){
@@ -51,11 +58,15 @@ class Message {
 		return $message_parts;
 	}
 
+
 	private function sendMessage($messages){
-		return 'sent';
+		Queue::message();
+		return Config::params('status')->sent;
 	}
+
 
 	private function removeInvalidCharacters($message=''){
 		return  strip_tags($message);
 	}
+
 }
