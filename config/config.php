@@ -13,10 +13,15 @@ class Config {
 			'db_password' => '10pearls',
 
 			// Application
-			'max_size' => 150,
+			'max_size' => 160,
+			'min_full_message_length' => 10,
+			'max_full_message_length' => 320,
+			'min_country_code' => 2,
+			'min_cellphone_number' => 9,
 			'status' => (object) array(
 					'sent' => 'sent',
 					'failed' => 'failed',
+					'invalid_request' => 'invalid_request',
 				   ),
 
 
