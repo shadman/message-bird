@@ -1,13 +1,13 @@
 <?php
 require_once('config/config.php');
-require_once('classes/messages.php');
+require_once('lib/message.php');
 
 	$message = new Message();
+	$response = $message->getMessage($_GET['status']);
 	if ($_POST) {
 		$response = $message->send($_POST);
 	}
 
-	$response = $message->getMessage($_GET['status'])
 ?>
 <!DOCTYPE html>
 <html>
@@ -16,14 +16,14 @@ require_once('classes/messages.php');
 	<script src="assets/message.js?v=1.0" type="text/javascript"></script>
 	<link rel="stylesheet" href="assets/message.css?v=1.0">
 </head>
-<body>
+<body onload="maxLimit()">
 
 	<div class="logo">
 		<img alt="Message Bird" src="assets/logo.png">
 	</div>
 	<div class="message-box-area">
 		<div class="request-message" id="request-message"><?php echo $response;?></div>
-		<form action="" method="post">
+		<form action="#" method="post" onsubmit="return validation()" name="message_form">
 			<div class="row">
 				To*: <br/> 
 				<select name="country_code">
@@ -37,10 +37,12 @@ require_once('classes/messages.php');
 					<option value="0092">+92</option>
 					<option value="00352">+352</option>
 				</select>
-				<input name="to" type="text" maxlength="11" placeholder="654321001" autofocus> 
+				<input name="cellphone_number" id="cellphone_number" type="text" maxlength="11" placeholder="654321001"
+				 value="<?php echo $_POST['cellphone_number'];?>" autofocus required> 
 			</div>
 			<div class="row">
-				Message*: <br/> <textarea name="message" id="message" placeholder="Your message will be here" onkeyup="maxLimit()"></textarea>
+				Message*: <br/> <textarea name="message" id="message" placeholder="Your message will be here" 
+				 onkeyup="maxLimit()" required><?php echo $_REQUEST['message'];?></textarea>
 				<br/>Text Limit (<span id="remaining-count">300</span>)
 			</div>
 			<div class="row">
