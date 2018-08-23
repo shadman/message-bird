@@ -1,9 +1,11 @@
 <?php
-require_once('config/config.php');
 require_once('lib/database.php');
 
 class SendMessages {
 
+	/*
+	* Executing Sending Messages Job
+	*/
 	public function send(){
 		
 		$database = new Database();

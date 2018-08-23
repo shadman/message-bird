@@ -4,6 +4,9 @@ require_once('lib/database.php');
 
 class Queue {
 
+	/* 
+	* Queue to hold every request of users from client
+	*/
 	public function message($to, $messages){
 		
 		$database = new Database();

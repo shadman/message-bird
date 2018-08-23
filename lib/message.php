@@ -8,9 +8,7 @@ class Message {
 	public $maxMassageSize;
 
 	public function __construct(){
-
 		$this->maxMassageSize = Config::params('max_size');
-
 	}
 
 	/*
@@ -49,12 +47,20 @@ class Message {
 	/*
 	* Private methods
 	*/
+
+	/*
+	* Adding message on a queue
+	*/
 	private function sendMessage($to_number, $messagesChunks){
 		Queue::message($to_number, $messagesChunks);
 		return Config::params('status')->sent;
 	}
 
 
+	/* 
+	* Filter message, removing unecessary character
+	* Also breaking long messages into chunks
+	*/
 	private function filterMessage($message=''){
 		
 		$message = $this->removeInvalidCharacters($message);
@@ -73,12 +79,16 @@ class Message {
 		return $message_parts;
 	}
 
-
+	/*
+	* Filtering cell phone number
+	*/
 	private function filterNumber($countryCode, $cellphoneNumber){
 		return $countryCode . $cellphoneNumber;
 	}
 
-
+	/*
+	* Breaking long messages into chunks
+	*/
 	private function breakMessages($message, $chunkSize=1){
 		$message_parts = [];
 
@@ -90,7 +100,9 @@ class Message {
 		return $message_parts;
 	}
 
-
+	/*
+	* Removing unnecessary html tags
+	*/
 	private function removeInvalidCharacters($message=''){
 		return  strip_tags($message);
 	}
