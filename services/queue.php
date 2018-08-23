@@ -1,6 +1,6 @@
 <?php
 require_once('config/config.php');
-require_once('lib/database.php');
+require_once('services/database.php');
 
 class Queue {
 

@@ -13,7 +13,7 @@ class Config {
 			'db_password' => '10pearls',
 
 			// Application
-			'ip_daily_message_limit' => 5,
+			'ip_daily_message_limit' => 10,
 			'max_size' => 160,
 			'min_full_message_length' => 10,
 			'max_full_message_length' => 320,

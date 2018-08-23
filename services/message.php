@@ -1,7 +1,7 @@
 <?php
 require_once('config/config.php');
-require_once('lib/queue.php');
-require_once('lib/validator.php');
+require_once('services/queue.php');
+require_once('services/validator.php');
 
 class Message {
 

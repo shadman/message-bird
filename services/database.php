@@ -3,7 +3,6 @@ require_once('config/config.php');
 
 class Database {
 
-
 	public $database, $host, $user, $password, $connect;
 
 	public function __construct(){
