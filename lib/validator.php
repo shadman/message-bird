@@ -25,7 +25,7 @@ class Validator {
 
 			// Check daily limit for specific IP
 			$maxMessageIPDailyLimit = Config::params('ip_daily_message_limit');
-			echo $countOfMessage = self::getCountOfMessages();
+			$countOfMessage = self::getCountOfMessages();
 			if ($countOfMessage >= $maxMessageIPDailyLimit ) 
 				return "You have exceeded your daily limit, as $maxMessageIPDailyLimit messages per day are allowed.";
 
