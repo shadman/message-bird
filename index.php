@@ -13,19 +13,19 @@ require_once('lib/message.php');
 <html>
 <head>
 	<title>MessageBird Magic</title>
-	<script src="assets/message.js?v=1.0" type="text/javascript"></script>
-	<link rel="stylesheet" href="assets/message.css?v=1.0">
+	<script src="assets/js/message.js?v=1.0" type="text/javascript"></script>
+	<link rel="stylesheet" href="assets/css/message.css?v=1.0">
 </head>
 <body onload="maxLimit()">
 
 	<div class="logo">
-		<img alt="Message Bird" src="assets/logo.png">
+		<img alt="Message Bird" src="assets/logo.gif">
 	</div>
 	<div class="message-box-area">
 		<div class="request-message" id="request-message"><?php echo $response;?></div>
 		<form action="#" method="post" onsubmit="return validation()" name="message_form">
 			<div class="row">
-				To*: <br/> 
+				<label>To<span class="required">*</span>:</label>
 				<select name="country_code">
 					<option value="001">+1</option>
 					<option value="0031" selected="selected">+31</option>
@@ -41,7 +41,8 @@ require_once('lib/message.php');
 				 value="<?php echo $_POST['cellphone_number'];?>" autofocus required> 
 			</div>
 			<div class="row">
-				Message*: <br/> <textarea name="message" id="message" placeholder="Your message will be here" 
+				<label> Message<span class="required">*</span>: </label>
+				<textarea name="message" id="message" placeholder="Your message will be here" 
 				 onkeyup="maxLimit()" required><?php echo $_REQUEST['message'];?></textarea>
 				<br/>Text Limit (<span id="remaining-count">300</span>)
 			</div>

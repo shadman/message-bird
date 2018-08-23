@@ -10,12 +10,24 @@ body, html, textarea, input, select {
 }
 
 
+.logo {
+	width: 480px;
+	margin: 0 auto; 
+
+}
+
+.logo img {
+	padding: 0px;
+	margin-top:20px;
+	width: 200px;
+}
+
 .message-box-area {
 	background-color: #2481d7;
 	width: 480px;
 	padding: 10px;
 	margin: 0 auto;
-	margin-top: 20px;
+	margin-top: 0px;
 }
 
 .row{
@@ -23,17 +35,6 @@ body, html, textarea, input, select {
 	font-size: 25px;
 	color: #FFFFFF;
 	font-weight: bold;
-}
-
-img {
-	padding: 10px;
-	width: 250px;
-}
-
-.logo {
-	width: 500px;
-	margin: 0 auto; 
-
 }
 
 form input, textarea, select {
@@ -64,6 +65,14 @@ form input[type=submit] {
 	padding: 10px;
 	background-color: green;
 	color: #FFFFFF;
+}
+
+label {
+	display: block;
+}
+
+label span.required {
+	color: red;
 }
 
 .request-message {
