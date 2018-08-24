@@ -20,11 +20,16 @@ class Config {
 			'min_country_code' => 2,
 			'min_cellphone_number' => 9,
 			'status' => (object) array(
-					'sent' => 'sent',
-					'failed' => 'failed',
-					'invalid_request' => 'invalid_request',
+						'sent' => 'sent',
+						'failed' => 'failed',
+						'invalid_request' => 'invalid_request',
 				   ),
 
+			// SMS Services
+			'sms_service' => (object) array(
+						 'access_key' => 'N9rxIiH6XiPJTK9aPm93WahRq',
+						 'originator' => 'MessageBird',
+					),
 
 
 		);
