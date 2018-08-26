@@ -1,6 +1,6 @@
 <?php
 require_once('config/config.php');
-require_once('jobs/send_message.php');
+require_once('jobs/sendMessage.php');
 
 	// Jobs will be executed from here, via crontab
 	switch ($_GET['action']) {
