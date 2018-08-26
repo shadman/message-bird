@@ -6,6 +6,9 @@ require_once(__DIR__ . '/../vendors/autoload.php');
 
 class SendMessages {
 
+	const FAILED = 'failed';
+	const SUCCESS = 'success';
+
 	/*
 	* Executing Sending Messages Job
 	*/
@@ -71,12 +74,12 @@ class SendMessages {
 					//print_r($MessageResult);
 				} catch (\MessageBird\Exceptions\AuthenticateException $e) {
 					// That means that your accessKey is unknown
-					return array ('status' => 'failed', 'message' => 'SMS API Authentication Failed. Please contact to your Admininstrator.');
+					return array ('status' => self::FAILED, 'message' => 'SMS API Authentication Failed. Please contact to your Admininstrator.');
 				} catch (\MessageBird\Exceptions\BalanceException $e) {
 					// That means that you are out of credits, so do something about it.
-					return array ('status' => 'failed', 'message' => 'SMS API Out of Credit. Please contact to your Admininstrator.');
+					return array ('status' => self::FAILED, 'message' => 'SMS API Out of Credit. Please contact to your Admininstrator.');
 				} catch (\Exception $e) {
-					return array ('status' => 'failed', 'message' => $e->getMessage());
+					return array ('status' => self::FAILED, 'message' => $e->getMessage());
 				}
 
 			}
@@ -100,7 +103,7 @@ class SendMessages {
 		$query = $database->update('message_queues', $recordValues, " id = $id ");
 		$database->query($query);
 
-		return array ('status' => 'success', 'message' => 'Message has been sent successfully.');
+		return array ('status' => self::SUCCESS, 'message' => 'Message has been sent successfully.');
 	}
 
 }
