@@ -15,6 +15,7 @@ class Message {
 	* Sending message
 	*/
 	public function send($request){
+		
 		$validate = Validator::validate($request);
 		if ($validate === true) {
 			$messages_chunks = $this->filterMessage($request['message']);
@@ -68,9 +69,9 @@ class Message {
 		$message_parts = [];
 
 		if ($messageLength > $this->maxMassageSize){
-			$totalChunks = floor($messageLength/$this->maxMassageSize);
-			$chunks = ( $totalChunks > 0) ? $totalChunks : 1 ; 
-			$message_parts[] = $this->breakMessages($message, $chunks);
+			$totalChunks = ceil($messageLength/$this->maxMassageSize);
+			$chunks = ( $totalChunks > 0 ) ? $totalChunks : 1;
+			$message_parts = $this->breakMessages($message, $chunks);
 
 		} else {
 			$message_parts[] = $message;
@@ -93,7 +94,7 @@ class Message {
 		$message_parts = [];
 
 		for($x=0; $x<$chunkSize; $x++) {
-			$start = ($x*150);
+			$start = ($x*$this->maxMassageSize);
 			$end = $this->maxMassageSize;
 			$message_parts[] = substr($message, $start, $end);
 		}
