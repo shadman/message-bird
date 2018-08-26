@@ -29,6 +29,8 @@ class Config {
 			'sms_service' => (object) array(
 						 'access_key' => 'N9rxIiH6XiPJTK9aPm93WahRq',
 						 'originator' => 'MessageBird',
+						 'type' => 'binary',
+						 'datacoding' => 'unicode'
 					),
 
 

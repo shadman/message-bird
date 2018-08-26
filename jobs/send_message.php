@@ -46,28 +46,32 @@ class SendMessages {
 			// Preparing message requests
 			$messages = json_decode($record['message'], true);
 
-			// Add batch sending
-
+			// Add headers for multiple parts
+			$chunksId = '';
+			if (count($messages)>1) $chunksId = md5(strtotime("now"));
 
 			// Sending long messages in chunks and short in a single go
 			foreach ($messages as $messagePart){
+
 				$request = array(
-					'message' => $record['message'],
+					'message' => $messagePart,
 					'cellphone' => $record['cellphone'],
 				);	
 
 				// Sending Message
 				$accessKey = Config::params('sms_service')->access_key;
 				$originator = Config::params('sms_service')->originator;
+				$smsType = Config::params('sms_service')->type;
+				$datacoding = Config::params('sms_service')->datacoding;
 
 				$MessageBird = new \MessageBird\Client($accessKey);
 				$Message = new \MessageBird\Objects\Message();
 				$Message->originator = $originator;
 				$Message->recipients = $request['cellphone'];
 				$Message->body = $request['message'];
+				$Message->type = $smsType;
+				if ($chunksId) $Message->typeDetails['udh'] = $chunksId;
 				$Message->datacoding = 'unicode';
-
-				// Add headers for multiple parts
 
 				try {
 					$MessageResult = $MessageBird->messages->create($Message);
@@ -78,6 +82,11 @@ class SendMessages {
 				} catch (\MessageBird\Exceptions\BalanceException $e) {
 					// That means that you are out of credits, so do something about it.
 					return array ('status' => self::FAILED, 'message' => 'SMS API Out of Credit. Please contact to your Admininstrator.');
+				} catch (\MessageBird\Exceptions\RequestException $e) {
+					// That means that either submitted request is invalid or sms provider not supporting that country
+					// updating request status as failed
+					$this->updateRecord($database, $record, 2);
+					return array ('status' => self::FAILED, 'message' => $e->getMessage());
 				} catch (\Exception $e) {
 					return array ('status' => self::FAILED, 'message' => $e->getMessage());
 				}
@@ -85,17 +94,17 @@ class SendMessages {
 			}
 
 			return $this->updateRecord($database, $record);
-			
-
 	}
 
 	/* 
 	* Update sms entry in queue after sending it
 	*/
-	private function updateRecord($database, $record){
+	private function updateRecord($database, $record, $status=1){
+
 		$id = $record['id'];
+
 		$recordValues = array ( 
-			"is_executed" => 1, 
+			"is_executed" => $status, 
 			"executed_at" => Date('Y-m-d H:i:s'),
 		);
 
