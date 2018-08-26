@@ -15,7 +15,7 @@ class SendMessages {
 		$data = array(
 			'cellphone' => $to,
 			'message' => json_encode($messages),
-			'ip_address' => $_SERVER['REMOTE_ADDR']
+			'ip_address' => $_SERVER['REMOTE_ADDR'],
 		);
 
 		$query = $database->selectOne('message_queues', array('id',
@@ -24,9 +24,9 @@ class SendMessages {
 		$exec = $database->query($query);
 		if ($exec) {
 			$record = $database->fetchArray($exec);
-			$response = $this->sendMessage($record);
+			$response = $this->sendMessage($database, $record);
 
-			return json_encode(array('status' => $response));
+			return json_encode(array('status' => $response['status'], 'message' => $response['message']));
 		}
 
 	}
@@ -38,10 +38,15 @@ class SendMessages {
 	/* 
 	* Sending messages from a queue
 	*/
-	private function sendMessage($record){
+	private function sendMessage($database, $record){
 
 			// Preparing message requests
 			$messages = json_decode($record['message'], true);
+
+			// Add batch sending
+
+
+			// Sending long messages in chunks and short in a single go
 			foreach ($messages as $messagePart){
 				$request = array(
 					'message' => $record['message'],
@@ -51,34 +56,51 @@ class SendMessages {
 				// Sending Message
 				$accessKey = Config::params('sms_service')->access_key;
 				$originator = Config::params('sms_service')->originator;
+
 				$MessageBird = new \MessageBird\Client($accessKey);
 				$Message = new \MessageBird\Objects\Message();
 				$Message->originator = $originator;
 				$Message->recipients = $request['cellphone'];
 				$Message->body = $request['message'];
+				$Message->datacoding = 'unicode';
+
+				// Add headers for multiple parts
 
 				try {
 					$MessageResult = $MessageBird->messages->create($Message);
-					print_r($MessageResult);
-
-						$id = $record['id'];
-						$dataTime = Date('Y-m-d H:i:s');
-						// Update message status
-
-
-					return 'Message has been sent successfully.';
+					//print_r($MessageResult);
 				} catch (\MessageBird\Exceptions\AuthenticateException $e) {
 					// That means that your accessKey is unknown
-					return 'SMS API Authentication Failed. Please contact to your Admininstrator.';
+					return array ('status' => 'failed', 'message' => 'SMS API Authentication Failed. Please contact to your Admininstrator.');
 				} catch (\MessageBird\Exceptions\BalanceException $e) {
 					// That means that you are out of credits, so do something about it.
-					return 'SMS API Out of Credit. Please contact to your Admininstrator.';
+					return array ('status' => 'failed', 'message' => 'SMS API Out of Credit. Please contact to your Admininstrator.');
 				} catch (\Exception $e) {
-					return $e->getMessage();
+					return array ('status' => 'failed', 'message' => $e->getMessage());
 				}
 
 			}
 
+			return $this->updateRecord($database, $record);
+			
+
+	}
+
+	/* 
+	* Update sms entry in queue after sending it
+	*/
+	private function updateRecord($database, $record){
+		$id = $record['id'];
+		$recordValues = array ( 
+			"is_executed" => 1, 
+			"executed_at" => Date('Y-m-d H:i:s'),
+		);
+
+		// Update message status and execution time to log
+		$query = $database->update('message_queues', $recordValues, " id = $id ");
+		$database->query($query);
+
+		return array ('status' => 'success', 'message' => 'Message has been sent successfully.');
 	}
 
 }

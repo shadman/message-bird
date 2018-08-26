@@ -68,6 +68,19 @@ class Database {
 	}
 
 	/*
+	* Update Table Record(s) Query
+	*/
+	public function update($tableName, $valuesArray, $where='', $limit=1){
+		foreach($valuesArray as $key => $value){
+			$valueData = $this->escapeString($value);
+			$valueUpdate[] = " $key = '$valueData' ";
+		}
+		
+		$setValues = implode(', ',$valueUpdate);
+		return "UPDATE $tableName SET $setValues WHERE $where LIMIT $limit";
+	}
+
+	/*
 	* Executing Query
 	*/
 	public function query($query){
