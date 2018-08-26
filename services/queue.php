@@ -13,7 +13,7 @@ class Queue {
 		$data = array(
 			'cellphone' => $to,
 			'message' => json_encode($messages),
-			'ip_address' => $_SERVER['REMOTE_ADDR']
+			'ip_address' => (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : ''
 		);
 
 		$query = $database->insert('message_queues', $data);

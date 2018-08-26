@@ -14,8 +14,8 @@ class Message {
 	/*
 	* Sending message
 	*/
-	public function send($request){
-		
+	public function send($request, $return=''){
+
 		$validate = Validator::validate($request);
 		if ($validate === true) {
 			$messages_chunks = $this->filterMessage($request['message']);
@@ -23,12 +23,15 @@ class Message {
 			
 			$response = $this->sendMessage($to_number, $messages_chunks);
 			if ($response == Config::params('status')->sent) {
+				if($return === 1) return $response;
+				
 				header('Location: index.php?status='.Config::params('status')->sent);
 			}
 
 		} else {
 			$response = $validate;
 		}
+
 		return $response;
 	}
 
@@ -40,6 +43,7 @@ class Message {
 
 		if ($status == Config::params('status')->sent) $message = "Message has been sent successfully";
 		else if ($status == Config::params('status')->invalid_request) $message = "Invalid request found";
+
 		return $message;
 	}
 
@@ -53,7 +57,9 @@ class Message {
 	* Adding message on a queue
 	*/
 	private function sendMessage($to_number, $messagesChunks){
+
 		Queue::message($to_number, $messagesChunks);
+
 		return Config::params('status')->sent;
 	}
 
@@ -98,6 +104,7 @@ class Message {
 			$end = $this->maxMassageSize;
 			$message_parts[] = substr($message, $start, $end);
 		}
+
 		return $message_parts;
 	}
 
