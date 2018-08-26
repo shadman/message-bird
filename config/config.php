@@ -27,7 +27,8 @@ class Config {
 
 			// SMS Services
 			'sms_service' => (object) array(
-						 'access_key' => 'N9rxIiH6XiPJTK9aPm93WahRq',
+						 // 'access_key' => 'N9rxIiH6XiPJTK9aPm93WahRq', // TEST
+						 'access_key' => '9J5pVGhXSsKaGIsfRB5oyB0YS',
 						 'originator' => 'MessageBird',
 						 'type' => 'binary',
 						 'datacoding' => 'unicode'

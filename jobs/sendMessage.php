@@ -61,12 +61,13 @@ class SendMessages {
 				$MessageBird = new \MessageBird\Client($accessKey);
 				$Message = new \MessageBird\Objects\Message();
 				$Message->originator = $originator;
-				$Message->recipients = $request['cellphone'];
+				$Message->recipients = (int)$request['cellphone'];
 				$Message->body = $request['message'];
 				$Message->type = $smsType;
-				if ($chunksId) $Message->typeDetails['udh'] = $chunksId;
-				$Message->datacoding = 'unicode';
+				$Message->datacoding = $datacoding;
 
+				if ($chunksId) $Message->typeDetails['udh'] = $chunksId;
+				
 				try {
 					$MessageResult = $MessageBird->messages->create($Message);
 					//print_r($MessageResult);

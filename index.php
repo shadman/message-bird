@@ -27,15 +27,15 @@ require_once('services/message.php');
 			<div class="row">
 				<label>To<span class="required">*</span>:</label>
 				<select name="country_code">
-					<option value="001">+1</option>
-					<option value="0031" selected="selected">+31</option>
-					<option value="0032">+32</option>
-					<option value="0041">+41</option>
-					<option value="0043">+43</option>
-					<option value="0044">+44</option>
-					<option value="0049">+49</option>
-					<option value="0092">+92</option>
-					<option value="00352">+352</option>
+					<option value="1">+1</option>
+					<option value="31" selected="selected">+31</option>
+					<option value="32">+32</option>
+					<option value="41">+41</option>
+					<option value="43">+43</option>
+					<option value="44">+44</option>
+					<option value="49">+49</option>
+					<option value="92">+92</option>
+					<option value="352">+352</option>
 				</select>
 				<input name="cellphone_number" id="cellphone_number" type="text" maxlength="11" placeholder="654321001"
 				 value="<?php echo $_POST['cellphone_number'];?>" autofocus required> 
