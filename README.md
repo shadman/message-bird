@@ -21,13 +21,16 @@
 
 >  crontab -e
 
-2. Add your jobs by adding below line by using example URL: `http://localhost/message-bird/job.php?action=send_message`
+2. Add a job by using below line and consider an example URL: `http://localhost/message-bird/job.php?action=send_message`
 
 >  */5 * * * * /usr/bin/curl "http://localhost/message-bird/job.php?action=send_message" 2>/dev/null
 
 3. Now messages will be sent automatically, from a queue
 
 ## Execute Tests:
+
+- Open a project directory, where you have deployed. ex: `cd /var/www/html/message-bird/`
+- Execute below command in shell to run all available tests
 
 > ./phpunit.phar tests/
 
